@@ -29,7 +29,6 @@ export class App extends Component {
     const currentContacts = this.state.contacts;
 
     if (currentContacts !== prevState.contacts) {
-      console.log(prevState.contacts);
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(currentContacts));
     }
   }
