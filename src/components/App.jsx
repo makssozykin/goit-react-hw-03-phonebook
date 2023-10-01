@@ -15,6 +15,25 @@ export class App extends Component {
     filter: '',
   };
 
+  STORAGE_KEY = 'phonebook';
+
+  componentDidMount() {
+    const savedContacts = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
+
+    if (savedContacts) {
+      this.setState({ contacts: savedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const currentContacts = this.state.contacts;
+
+    if (currentContacts !== prevState.contacts) {
+      console.log(prevState.contacts);
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(currentContacts));
+    }
+  }
+
   // зміна значення фільтру
 
   onChangeFilter = e => {
@@ -28,7 +47,6 @@ export class App extends Component {
   getContacts = () => {
     const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
-
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
@@ -49,6 +67,7 @@ export class App extends Component {
       contacts: [{ id: nanoid(), ...contact }, ...prevState.contacts],
     }));
   };
+
   // Видалення контакту зі списку
 
   deleteContact = contactId => {
